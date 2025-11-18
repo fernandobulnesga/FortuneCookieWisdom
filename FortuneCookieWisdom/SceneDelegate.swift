@@ -2,7 +2,7 @@
 //  SceneDelegate.swift
 //  FortuneCookieWisdom
 //
-//  Created by Anastasiia Cherniakova on 11/17/25.
+//  Created by Fernando Bulnes Garrorena on 11/17/25.
 //
 
 import UIKit
