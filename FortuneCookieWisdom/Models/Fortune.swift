@@ -7,7 +7,6 @@
 
 import Foundation
 
-// CONCEPTO: Struct & Codable (Módulo 8 + Persistencia)
 struct Fortune: Codable {
     let text: String
     let category: String

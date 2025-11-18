@@ -18,10 +18,10 @@ class ViewController: UIViewController {
     let fortuneProvider = FortuneProvider()
     
     enum CookieState {
-        case whole      // Entera
-        case cracked    // Agrietada
-        case broken     // Rota
-        case revealed   // Texto revelado
+        case whole
+        case cracked
+        case broken
+        case revealed
     }
     
     var currentState: CookieState = .whole
@@ -31,16 +31,12 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // 1. Aplicamos el diseño visual (Fondo, sombras)
         setupDesign()
-        
-        // 2. Configuramos el estado inicial del juego
         setupInitialState()
     }
     
-    // MARK: - DISEÑO VISUAL
+    // MARK: - Visual Design
     func setupDesign() {
-        // Fondo con patrón (Igual que en el historial)
         let backgroundImageView = UIImageView(image: UIImage(named: "background-pattern"))
         backgroundImageView.contentMode = .scaleAspectFill
         backgroundImageView.alpha = 0.50
@@ -48,14 +44,12 @@ class ViewController: UIViewController {
         backgroundImageView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         view.insertSubview(backgroundImageView, at: 0)
         
-        // Sombra para la Galleta (Efecto 3D)
         cookieButton.layer.shadowColor = UIColor.black.cgColor
         cookieButton.layer.shadowOpacity = 0.3
         cookieButton.layer.shadowOffset = CGSize(width: 0, height: 10)
         cookieButton.layer.shadowRadius = 15
         cookieButton.layer.masksToBounds = false
         
-        // Sombra suave para el texto
         fortuneLabel.layer.shadowColor = UIColor.white.cgColor
         fortuneLabel.layer.shadowOpacity = 0.8
         fortuneLabel.layer.shadowOffset = CGSize(width: 0, height: 1)
@@ -63,12 +57,11 @@ class ViewController: UIViewController {
         fortuneLabel.layer.masksToBounds = false
     }
     
-    // MARK: - Configuración Lógica Inicial
+    // MARK: - Initital Logic Configuration
     func setupInitialState() {
         currentState = .whole
         tapCount = 0
         
-        // Configuración Texto Instrucciones
         if let label = fortuneLabel {
             label.alpha = 1.0
             label.text = "Tap 3 times to crack the cookie..."
@@ -77,22 +70,19 @@ class ViewController: UIViewController {
             label.transform = .identity
         }
         
-        // Configuración Galleta
         if let button = cookieButton {
             let wholeImage = UIImage(named: "cookie_whole")
             button.setImage(wholeImage, for: .normal)
             
-            // [IMPORTANTE] Forzamos que la imagen no se deforme nunca
             button.imageView?.contentMode = .scaleAspectFit
             button.contentHorizontalAlignment = .fill
             button.contentVerticalAlignment = .fill
         }
         
-        // Configuración Corazón
         if let heart = heartButton {
             heart.setImage(UIImage(systemName: "heart"), for: .normal)
             heart.tintColor = .systemRed
-            heart.alpha = 0.5 // Desactivado visualmente
+            heart.alpha = 0.5
             heart.isEnabled = false
         }
     }
@@ -124,7 +114,6 @@ class ViewController: UIViewController {
             fortuneLabel.text = "Hard shell... \(remaining) more taps!"
             fortuneLabel.font = UIFont.systemFont(ofSize: 18, weight: .medium)
         } else {
-            // Cambio de estado
             currentState = .cracked
             tapCount = 0
             
@@ -147,7 +136,6 @@ class ViewController: UIViewController {
             shakeCookie()
             fortuneLabel.text = "Almost open... Tap harder! (\(tapCount)/3)"
         } else {
-            // Cambio de estado
             currentState = .broken
             
             let generator = UIImpactFeedbackGenerator(style: .heavy)
@@ -167,33 +155,27 @@ class ViewController: UIViewController {
         currentState = .revealed
         let fortune = fortuneProvider.getRandomFortune()
         
-        // Animación de salida del texto anterior
         fortuneLabel.alpha = 0
         fortuneLabel.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
         
-        // Nuevo Texto con estilo elegante
         fortuneLabel.text = "\"\(fortune.text)\""
         fortuneLabel.textColor = .black
         fortuneLabel.font = UIFont(name: "Georgia-Italic", size: 26) ?? UIFont.italicSystemFont(ofSize: 26)
         
-        // Activar Corazón
         if let heart = heartButton {
             heart.setImage(UIImage(systemName: "heart"), for: .normal)
             heart.isEnabled = true
             heart.alpha = 1.0
             
-            // Pequeña animación para llamar la atención
             UIView.animate(withDuration: 0.5, delay: 0.5, options: [.autoreverse, .repeat], animations: {
                 heart.transform = CGAffineTransform(scaleX: 1.1, y: 1.1)
             }, completion: nil)
         }
         
-        // Animación de entrada del texto
         UIView.animate(withDuration: 1.0, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.5, options: [], animations: {
             self.fortuneLabel.alpha = 1
             self.fortuneLabel.transform = .identity
         }) { _ in
-            // Parar animación del corazón y mostrar texto de reinicio
             DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
                 self.heartButton.layer.removeAllAnimations()
                 self.heartButton.transform = .identity
@@ -228,17 +210,14 @@ class ViewController: UIViewController {
     @IBAction func saveFavoriteTapped(_ sender: UIButton) {
         if currentState == .revealed, let text = fortuneLabel.text {
             
-            // Limpiar texto extra
             let cleanText = text.components(separatedBy: "\n\n").first?
                                 .replacingOccurrences(of: "\"", with: "") ?? text
             
-            // Guardar solo si no existe ya
             if !FortuneProvider.favoriteFortunes.contains(where: { $0.text == cleanText }) {
                 let newFortune = Fortune(text: cleanText, category: "Saved Wisdom", isFavorite: true)
                 FortuneProvider.favoriteFortunes.append(newFortune)
             }
             
-            // Feedback Visual
             sender.layer.removeAllAnimations()
             sender.transform = .identity
             sender.tintColor = .systemRed

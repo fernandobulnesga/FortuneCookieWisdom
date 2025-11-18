@@ -32,22 +32,19 @@ class HistoryViewController: UIViewController, UITableViewDataSource, UITableVie
         checkEmptyState()
     }
     
-    // MARK: - Configuración de Diseño
+    // MARK: - Design Configuration
     func setupDesign() {
         title = "My Wisdom Collection"
         
-        // FONDO: Patrón visible pero suave
         let backgroundImageView = UIImageView(image: UIImage(named: "background-pattern"))
         backgroundImageView.contentMode = .scaleAspectFill
         backgroundImageView.alpha = 0.50
         tableView.backgroundView = backgroundImageView
         
-        // Separadores fuera y espacio extra
         tableView.separatorStyle = .none
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 120
         
-        // Margen superior e inferior de la tabla
         tableView.contentInset = UIEdgeInsets(top: 20, left: 0, bottom: 20, right: 0)
     }
     
@@ -78,51 +75,34 @@ class HistoryViewController: UIViewController, UITableViewDataSource, UITableVie
         
         var content = cell.defaultContentConfiguration()
         
-        // 1. TEXTO PRINCIPAL (Más negro y bonito)
         content.text = "\"\(fortune.text)\""
-        // Usamos una fuente con 'serif' (con remates) para que parezca un libro
         content.textProperties.font = UIFont(name: "Georgia-Italic", size: 20) ?? UIFont.italicSystemFont(ofSize: 20)
-        content.textProperties.color = .black // Negro puro
-        content.textProperties.alignment = .center // Centrado queda más elegante en tarjetas
+        content.textProperties.color = .black
+        content.textProperties.alignment = .center
         content.textProperties.numberOfLines = 0
         
-        // 2. TEXTO SECUNDARIO (Número)
         content.secondaryText = "— Wisdom #\(indexPath.row + 1) —"
         content.secondaryTextProperties.font = UIFont.systemFont(ofSize: 12, weight: .bold)
         content.secondaryTextProperties.color = .systemOrange
         content.secondaryTextProperties.alignment = .center
         content.secondaryTextProperties.transform = .uppercase
         
-        // 3. ICONO (Comillas decorativas arriba)
-        // Nota: Al poner el texto centrado, a veces queda mejor sin icono lateral,
-        // pero si lo quieres, descomenta las siguientes líneas:
-        /*
-        content.image = UIImage(systemName: "quote.opening")
-        content.imageProperties.tintColor = .systemOrange
-        */
-        
-        // 4. FONDO TIPO "TARJETA PREMIUM"
         var backgroundConfig = UIBackgroundConfiguration.listCell()
-        backgroundConfig.backgroundColor = .white // Fondo blanco limpio para contraste
-        backgroundConfig.cornerRadius = 20 // Bordes muy redondeados
-        
-        // EL CONTORNO NARANJA QUE PEDISTE
+        backgroundConfig.backgroundColor = .white
+        backgroundConfig.cornerRadius = 20
         backgroundConfig.strokeColor = .systemOrange
-        backgroundConfig.strokeWidth = 2 // Grosor del borde
-        
-        // Márgenes para separar las tarjetas
+        backgroundConfig.strokeWidth = 2
         backgroundConfig.backgroundInsets = NSDirectionalEdgeInsets(top: 10, leading: 20, bottom: 10, trailing: 20)
         
         cell.backgroundConfiguration = backgroundConfig
         cell.contentConfiguration = content
         cell.backgroundColor = .clear
         
-        // 5. SOMBRA (Efecto 3D)
         cell.layer.shadowColor = UIColor.black.cgColor
         cell.layer.shadowOpacity = 0.15
         cell.layer.shadowOffset = CGSize(width: 0, height: 4)
         cell.layer.shadowRadius = 6
-        cell.clipsToBounds = false // Permite que la sombra salga de la celda
+        cell.clipsToBounds = false
         
         return cell
     }
@@ -133,7 +113,7 @@ class HistoryViewController: UIViewController, UITableViewDataSource, UITableVie
             favorites.remove(at: indexPath.row)
             FortuneProvider.favoriteFortunes = favorites
             tableView.deleteRows(at: [indexPath], with: .fade)
-            tableView.reloadData() // Recargar para renumerar
+            tableView.reloadData()
             checkEmptyState()
         }
     }

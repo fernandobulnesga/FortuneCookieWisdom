@@ -9,8 +9,6 @@ import Foundation
 
 struct FortuneProvider {
     
-    // CONCEPTO: Persistencia de Datos (UserDefaults)
-    // Esta variable 'static' lee y escribe automáticamente en el disco del iPhone.
     static var favoriteFortunes: [Fortune] {
         get {
             if let data = UserDefaults.standard.data(forKey: "savedFortunes"),
@@ -26,7 +24,6 @@ struct FortuneProvider {
         }
     }
     
-    // CONCEPTO: Arrays (Módulo 4)
     private let quotes = [
         "Success is not the key to happiness. Happiness is the key to success.",
         "Do not count the days, make the days count.",
@@ -40,7 +37,6 @@ struct FortuneProvider {
         "Do not find fault, find a remedy."
     ]
     
-    // CONCEPTO: Functions (Módulo 6)
     func getRandomFortune() -> Fortune {
         let randomQuote = quotes.randomElement() ?? "Today is your lucky day."
         return Fortune(text: randomQuote, category: "General", isFavorite: false)

@@ -35,4 +35,4 @@ This project demonstrates the following concepts learned in class:
     * Tap the Book icon (top-right) to view your saved wisdom.
 
 ## 🔗 GitHub
-[Insert link to your repository here]
+https://github.com/fernandobulnesga/FortuneCookieWisdom
