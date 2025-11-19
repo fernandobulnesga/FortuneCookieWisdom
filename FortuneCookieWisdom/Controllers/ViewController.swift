@@ -87,7 +87,7 @@ class ViewController: UIViewController {
         }
     }
 
-    // MARK: - Acción Principal
+    // MARK: - Principal Action
     @IBAction func cookieTapped(_ sender: UIButton) {
         animateButtonPress()
         
@@ -103,7 +103,7 @@ class ViewController: UIViewController {
         }
     }
     
-    // MARK: - FASE 1: Romper Cáscara (3 toques)
+    // MARK: - FASE 1: Crack Cookie (3 taps)
     func handleWholeState() {
         tapCount += 1
         let tapsNeeded = 3
@@ -127,7 +127,7 @@ class ViewController: UIViewController {
         }
     }
     
-    // MARK: - FASE 2: Abrir Galleta (3 toques más)
+    // MARK: - FASE 2: Open Cookie (3 more taps)
     func handleCrackedState() {
         tapCount += 1
         let tapsNeeded = 3
@@ -150,7 +150,7 @@ class ViewController: UIViewController {
         }
     }
     
-    // MARK: - FASE 3: Revelar Fortuna
+    // MARK: - FASE 3: Revel Message
     func revealFortune() {
         currentState = .revealed
         let fortune = fortuneProvider.getRandomFortune()
@@ -206,7 +206,7 @@ class ViewController: UIViewController {
         }
     }
     
-    // MARK: - Acción Guardar
+    // MARK: - Save Action
     @IBAction func saveFavoriteTapped(_ sender: UIButton) {
         if currentState == .revealed, let text = fortuneLabel.text {
             
@@ -233,7 +233,7 @@ class ViewController: UIViewController {
         }
     }
 
-    // MARK: - Animaciones Táctiles
+    // MARK: - Touch Animations
     func animateButtonPress() {
         UIView.animate(withDuration: 0.1, animations: {
             self.cookieButton.transform = CGAffineTransform(scaleX: 0.95, y: 0.95)
